@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Swiper demo - default</title>
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/css/swiper.min.css" />
+  </head>
+  <body>
+    <style>
+      html,
+      body {
+        position: relative;
+        height: 100%;
+      }
+      body {
+        background: #eee;
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color: #000;
+        margin: 0;
+        padding: 0;
+      }
+      .swiper-container {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <!-- Swiper -->
+    <div class="swiper-container">
+      <div class="swiper-wrapper" id="mainDiv"></div>
+    </div>
+
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/js/swiper.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Initialize Swiper -->
+    <script>
+      function promisedParseJSON(json) {
+        return new Promise((resolve, reject) => {
+          try {
+            resolve(json.json());
+          } catch (e) {
+            reject(e);
+          }
+        });
+      }
+      var arrayz = [];
+      var swiper = new Swiper(".swiper-container", {
+        // Optional parameters
+        direction: "vertical",
+        loop: true
+      });
+      var url =
+        "http://newsapi.org/v2/top-headlines?" +
+        "country=us&" +
+        "apiKey=8277a0bdaa0b4f3a80c23529337883d0";
+      fetch(url)
+        .then(res => res.json())
+        .then(test => {
+          console.log(test);
+          var toAdd = document.getElementById("mainDiv");
+          for (var item of test.articles) {
+            swiper.appendSlide(
+              '<div class="swiper-slide"><h1 style="font-size: 55px; color:#d0363e;">' +
+                item.title +
+                '</h1><img width="100%" src="' +
+                item.urlToImage +
+                '"/> <h1 style="color:#000;font-size: 45px">' +
+                item.content +
+                item.description +
+                "</h1></div>"
+            );
+          }
+          /* for (var i = 0; i < test.articles.length; i++) {
+            var newDiv = document.createElement("div");
+            newDiv.id = "r" + i;
+            newDiv.className = "swiper-slide";  
+            newDiv.innerHTML = test.articles[i].title;
+            toAdd.appendChild(newDiv);
+          } */
+        });
+    </script>
+  </body>
+</html>
